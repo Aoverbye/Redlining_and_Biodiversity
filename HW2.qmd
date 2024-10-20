@@ -1,7 +1,7 @@
 ---
 title: "Homework Assignment #2"
 subtitle: "Exploring patterns of environmental justice"
-author: "UPDATE WITH YOUR NAME"
+author: Amanda G. Overbye
 date: last-modified
 execute: 
   eval: false
@@ -14,6 +14,7 @@ editor_options:
 
 ## Part 1: Legacy of redlining in current environmental (in)justice
 
+Test line for github
 
 ## Part 2: Legacy of redlining in biodiversity observations
 
