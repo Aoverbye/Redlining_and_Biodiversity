@@ -12,9 +12,46 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r}
+# Load in libraries
+library(here)
+library(tidyverse)
+library(sf)
+library(tmap)
+```
+
+
 ## Part 1: Legacy of redlining in current environmental (in)justice
 
-Test line for github
+```{r}
+# Read in data
+
+# Read in ejscreen
+ejscreen <- sf::st_read(here::here("data","ejscreen","EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb"))
+
+# Filter California from ejscreen
+cali <- ejscreen %>%
+  dplyr::filter(ST_ABBREV == "CA")
+
+# Filter Los Angeles County from cali
+la_county <- cali %>%
+  dplyr::filter(CNTY_NAME %in% c("Los Angeles County"))
+
+# Read in mapping inequality 
+la_map_ineq <- st_read(here::here("data", "mapping-inequality", "mapping-inequality-los-angeles.json"))
+
+```
+
+
+```{r}
+tm_shape(cali, bbox = "Los Angeles County") +
+  tm_polygons() +
+tm_shape(la_county) +
+  tm_fill(col = "lightblue") +
+  tm_shape(la_map_ineq) +
+  tm_polygons()
+```
+
 
 ## Part 2: Legacy of redlining in biodiversity observations
 
