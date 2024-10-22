@@ -1,10 +1,10 @@
 ---
-title: "Homework Assignment #2"
+title: "Homework Assignment Two"
 subtitle: "Exploring patterns of environmental justice"
 author: Amanda G. Overbye
 date: last-modified
 execute: 
-  eval: false
+  eval: true
 format:
   html:
     toc: true
@@ -42,11 +42,14 @@ la_county <- cali %>%
 # Read in mapping inequality 
 la_map_ineq <- st_read(here::here("data", "mapping-inequality", "mapping-inequality-los-angeles.json"))
 
+# Read in bird data 
+bird_obs <- st_read(here::here("data", "gbif-birds-LA", "gbif-birds-LA.shp"))
 
 ```
 
 
 ```{r}
+#color = "#547c79ff"
 full_la <- tm_shape(cali, bbox = "Los Angeles County") +
   tm_polygons() +
 tm_shape(la_county) +
@@ -98,42 +101,78 @@ inset_la <- ggdraw() +
 print(inset_la)
 ```
 
+# ADD A WARNING ABOUT WHETHER OR NOT THEY ARE THE SAME CRS
 
 ```{r}
-# Combine la_map_ineq and la_county by using the la_map_ineq crs system
+# Ensure la_map_ineq and la_county are using the same la_map_ineq crs system
 la_map_ineq <- st_transform(la_map_ineq, crs = st_crs(la_county))
 ```
 
 ```{r}
+# Join la_county and la_map_ineq with st_intersects()
 joined_la <- st_join(la_county, la_map_ineq, join = st_intersects)
 ```
 
 
 ```{r}
-percentages <- joined_la %>%
+# Create table of percent in each HOLC group
+HOLC_percent <- joined_la %>%
   group_by(grade) %>%
   summarise(count = n()) %>%
-  mutate(percentage = (count / sum(count)) * 100)
+  mutate(HOLC_percent = (count / sum(count)) * 100)
   
 ```
 
 ```{r}
-print(percentages)
-```
-
-
-```{r}
-st_is_valid(la_map_ineq)
-st_is_valid(la_county)
-
+# Print table
+print(HOLC_percent)
 ```
 
 ```{r}
-# Join 
-joined_la <- st_join(la_map_ineq, la_county, join = st_intersection)
+# Get mean values for percentage low income, PM2.5 percentiles, and low life expediency percentiles
+sum_current_conditions <- joined_la %>%
+  group_by(grade) %>%
+  summarise( 
+    low_income_mean = mean(LOWINCPCT, na.rm = TRUE),
+    pm2_mean = mean(P_PM25, na.rm = TRUE),
+    life_exp_mean = mean(P_LIFEEXPPCT, na.rm = TRUE))
 ```
 
-  #summarize( mean = mean(ID))
+```{r}
+# Create graph for sum_current_conditions
+ggplot(data = sum_current_conditions, aes(x = grade, y = pm2_mean)) +
+  geom_col(fill = "#547c79ff")
+
+ggplot(data = sum_current_conditions, aes(x = grade, y = low_income_mean)) +
+  geom_col()
+
+ggplot(data = sum_current_conditions, aes(x = grade, y = life_exp_mean)) +
+  geom_col()
+```
+
+
 ## Part 2: Legacy of redlining in biodiversity observations
+
+```{r}
+
+```
+
+# ADD A WARNING ABOUT WHETHER OR NOT THEY ARE THE SAME CRS
+
+```{r}
+bird_obs <- st_transform(bird_obs, crs = st_crs(la_county))
+```
+
+
+```{r}
+la_birds <- st_join(la_map_ineq, bird_obs, join = st_intersects)
+```
+
+```{r}
+test_bird <- la_birds %>%
+  group_by(grade) %>%
+  summarise( summarise(count = la_birds)) %>%
+  mutate(la_birds = (count / sum(count)) * 100)
+```
 
 
