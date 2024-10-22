@@ -18,6 +18,8 @@ library(here)
 library(tidyverse)
 library(sf)
 library(tmap)
+library(ggplot2)
+library(cowplot)
 ```
 
 
@@ -40,19 +42,98 @@ la_county <- cali %>%
 # Read in mapping inequality 
 la_map_ineq <- st_read(here::here("data", "mapping-inequality", "mapping-inequality-los-angeles.json"))
 
+
 ```
 
 
 ```{r}
-tm_shape(cali, bbox = "Los Angeles County") +
+full_la <- tm_shape(cali, bbox = "Los Angeles County") +
   tm_polygons() +
 tm_shape(la_county) +
-  tm_fill(col = "lightblue") +
+  tm_polygons() +
   tm_shape(la_map_ineq) +
-  tm_polygons()
+  tm_polygons(col = "grade") +
+  tm_layout(legend.show = FALSE)
+```
+
+```{r}
+full_la
 ```
 
 
+```{r}
+ineq_bbox <- st_bbox(la_map_ineq)
+
+```
+
+```{r}
+mini_la <- tm_shape(cali, bbox = ineq_bbox) +
+  tm_polygons() +
+tm_shape(la_county) +
+  tm_polygons() +
+  tm_shape(la_map_ineq) +
+  tm_polygons(col = "grade")
+```
+
+```{r}
+print(mini_la)
+```
+
+
+```{r}
+main_tmap <- tmap_grob(mini_la)
+
+sub_tmap <- tmap_grob(full_la)
+```
+
+```{r}
+inset_la <- ggdraw() +
+  draw_plot(main_tmap) +
+  draw_plot(sub_tmap, height = 0.3,
+    x = -0.3
+  )
+```
+
+```{r}
+print(inset_la)
+```
+
+
+```{r}
+# Combine la_map_ineq and la_county by using the la_map_ineq crs system
+la_map_ineq <- st_transform(la_map_ineq, crs = st_crs(la_county))
+```
+
+```{r}
+joined_la <- st_join(la_county, la_map_ineq, join = st_intersects)
+```
+
+
+```{r}
+percentages <- joined_la %>%
+  group_by(grade) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = (count / sum(count)) * 100)
+  
+```
+
+```{r}
+print(percentages)
+```
+
+
+```{r}
+st_is_valid(la_map_ineq)
+st_is_valid(la_county)
+
+```
+
+```{r}
+# Join 
+joined_la <- st_join(la_map_ineq, la_county, join = st_intersection)
+```
+
+  #summarize( mean = mean(ID))
 ## Part 2: Legacy of redlining in biodiversity observations
 
 
