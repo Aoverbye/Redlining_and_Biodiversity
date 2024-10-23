@@ -75,7 +75,7 @@ mini_la <- tm_shape(cali, bbox = ineq_bbox) +
 tm_shape(la_county) +
   tm_polygons() +
   tm_shape(la_map_ineq) +
-  tm_polygons(col = "grade")
+  tm_polygons(col = "grade") +
 ```
 
 ```{r}
@@ -133,7 +133,7 @@ print(HOLC_percent)
 sum_current_conditions <- joined_la %>%
   group_by(grade) %>%
   summarise( 
-    low_income_mean = mean(LOWINCPCT, na.rm = TRUE),
+    low_income_mean = (mean(LOWINCPCT, na.rm = TRUE) * 100),
     pm2_mean = mean(P_PM25, na.rm = TRUE),
     life_exp_mean = mean(P_LIFEEXPPCT, na.rm = TRUE))
 ```
@@ -141,13 +141,22 @@ sum_current_conditions <- joined_la %>%
 ```{r}
 # Create graph for sum_current_conditions
 ggplot(data = sum_current_conditions, aes(x = grade, y = pm2_mean)) +
-  geom_col(fill = "#547c79ff")
+  geom_col(fill = "#547c79ff") +
+  labs(title = "Mean PM 2.5 Percentile by HOLC Grade", 
+       x = "HOLC Grade", 
+       y = "Mean Life PM 2.5 Percentile")
 
 ggplot(data = sum_current_conditions, aes(x = grade, y = low_income_mean)) +
-  geom_col()
+  geom_col() +
+  labs(title = "Mean Low Income Percentile by HOLC Grade", 
+       x = "HOLC Grade", 
+       y = "Mean Percent Low Income")
 
 ggplot(data = sum_current_conditions, aes(x = grade, y = life_exp_mean)) +
-  geom_col()
+  geom_col() +
+  labs(title = "Mean Life Expectancy Percentile by HOLC Grade", 
+       x = "HOLC Grade", 
+       y = "Mean Life Expectancy Percentile")
 ```
 
 
@@ -168,11 +177,29 @@ bird_obs <- st_transform(bird_obs, crs = st_crs(la_county))
 la_birds <- st_join(la_map_ineq, bird_obs, join = st_intersects)
 ```
 
+
 ```{r}
-test_bird <- la_birds %>%
+birds_obs_percent <- la_birds %>%
   group_by(grade) %>%
-  summarise( summarise(count = la_birds)) %>%
-  mutate(la_birds = (count / sum(count)) * 100)
+  summarise(obs_count = n()) %>%
+  mutate(percentage = (obs_count / sum(obs_count)) * 100)
 ```
 
+```{r}
+# Create col chart of the percent of birds in each grade
+ggplot(data = birds_obs_percent, aes(x = grade, y = percentage)) +
+  geom_col()
+```
+
+```{r}
+tm_shape(cali, bbox = "Los Angeles County") +
+  tm_polygons() +
+tm_shape(la_county) +
+  tm_polygons() +
+  tm_shape(la_map_ineq) +
+  tm_polygons(col = "grade") +
+  tm_layout(legend.show = FALSE) +
+  tm_shape(la_birds) +
+  tm_polygons()
+```
 
