@@ -81,10 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#part-1-legacy-of-redlining-in-current-environmental-injustice" id="toc-part-1-legacy-of-redlining-in-current-environmental-injustice" class="nav-link active" data-scroll-target="#part-1-legacy-of-redlining-in-current-environmental-injustice">Part 1: Legacy of redlining in current environmental (in)justice</a></li>
-  <li><a href="#do-the-test-that-on-the-units-for-pm" id="toc-do-the-test-that-on-the-units-for-pm" class="nav-link" data-scroll-target="#do-the-test-that-on-the-units-for-pm">Do the test that on the units for pm</a>
+  <li><a href="#part-1-legacy-of-redlining-in-current-environmental-injustice" id="toc-part-1-legacy-of-redlining-in-current-environmental-injustice" class="nav-link active" data-scroll-target="#part-1-legacy-of-redlining-in-current-environmental-injustice">Part 1: Legacy of redlining in current environmental (in)justice</a>
   <ul class="collapse">
-  <li><a href="#part-2-legacy-of-redlining-in-biodiversity-observations" id="toc-part-2-legacy-of-redlining-in-biodiversity-observations" class="nav-link" data-scroll-target="#part-2-legacy-of-redlining-in-biodiversity-observations">Part 2: Legacy of redlining in biodiversity observations</a></li>
+  <li><a href="#looking-at-the-data" id="toc-looking-at-the-data" class="nav-link" data-scroll-target="#looking-at-the-data">Looking At The Data</a></li>
+  </ul></li>
+  <li><a href="#part-2-legacy-of-redlining-in-biodiversity-observations" id="toc-part-2-legacy-of-redlining-in-biodiversity-observations" class="nav-link" data-scroll-target="#part-2-legacy-of-redlining-in-biodiversity-observations">Part 2: Legacy of redlining in biodiversity observations</a>
+  <ul class="collapse">
+  <li><a href="#looking-at-the-data-1" id="toc-looking-at-the-data-1" class="nav-link" data-scroll-target="#looking-at-the-data-1">Looking At The Data</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -194,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">size =</span> <span class="dv">1</span>, </span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">text.size =</span> .<span class="dv">75</span>,</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"HOLC Districts in LA County"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">"HOLC Grade Areas in LA County"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -280,22 +283,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(sum_current_conditions_table, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"HOLC Grade"</span>, <span class="st">"Low Income Percentage"</span>, <span class="st">"PM2.5 Mean Percentile"</span>, <span class="st">"Life Expectancy Percentile"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(sum_current_conditions_table, <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">"HOLC Grade"</span>, <span class="st">"Low Income Percentage"</span>, <span class="st">"PM2.5 Mean Percentile"</span>, <span class="st">"Low Life Expectancy Percentile"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 13%">
-<col style="width: 26%">
-<col style="width: 26%">
-<col style="width: 32%">
+<col style="width: 12%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 36%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;">HOLC Grade</th>
 <th style="text-align: right;">Low Income Percentage</th>
 <th style="text-align: right;">PM2.5 Mean Percentile</th>
-<th style="text-align: right;">Life Expectancy Percentile</th>
+<th style="text-align: right;">Low Life Expectancy Percentile</th>
 </tr>
 </thead>
 <tbody>
@@ -333,9 +336,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
-</section>
-<section id="do-the-test-that-on-the-units-for-pm" class="level1">
-<h1>Do the test that on the units for pm</h1>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -387,6 +387,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<section id="looking-at-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="looking-at-the-data">Looking At The Data</h3>
+<p>When looking at the geographical map of Los Angeles County, we can see that many of the grade C and D HOLC areas are clustered in the center of the city, whereas the A and B grade areas are more prominent on the outskirts. The tables and graphs on income level, particulate matter, and life expectancy show that areas affected by redlining have lower incomes, more particulate matter in the air, and lower life expectancies. These findings illustrate that redlining has had a negative impact on those living in these areas</p>
+</section>
+</section>
 <section id="part-2-legacy-of-redlining-in-biodiversity-observations" class="level2">
 <h2 class="anchored" data-anchor-id="part-2-legacy-of-redlining-in-biodiversity-observations">Part 2: Legacy of redlining in biodiversity observations</h2>
 <div class="cell">
@@ -461,6 +466,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<section id="looking-at-the-data-1" class="level3">
+<h3 class="anchored" data-anchor-id="looking-at-the-data-1">Looking At The Data</h3>
+<p>Our data show that the majority of bird observations have been done within the C HOLC grade area. The second most common grades are the A and D grade areas. This is unexpected because previous data has shown that there are fewer bird observations in heavily redlined areas (Ellis-Soto et al., 2023). This indicates that there may be a more complex relationship between bird observations and redlining that could be investigated in the future.</p>
+<p><strong>Citations:</strong></p>
+<p>Ellis-Soto, D., Chapman, M., &amp; Locke, D. H. (2023). Historical redlining is associated with increasing geographical disparities in bird biodiversity sampling in the United States. Nature Human Behaviour, 1-9</p>
+<p>GBIF.org, gbif-birds-LA&nbsp;dataset</p>
+<p>Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al., “Mapping Inequality,” American Panorama, ed.&nbsp;Robert K. Nelson and Edward L. Ayers, accessed October 24, 2023</p>
+<p>U.S. Environmental Protection Agency (EPA), 2024. EJScreen Technical Documentation, accessed October 24, 2023</p>
 </section>
 </section>
 
