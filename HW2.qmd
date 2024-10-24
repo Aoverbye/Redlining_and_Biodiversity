@@ -5,8 +5,10 @@ author: Amanda G. Overbye
 date: last-modified
 execute: 
   eval: true
+  warning: false
 format:
   html:
+    code-fold: true
     toc: true
 editor_options: 
   chunk_output_type: console
@@ -20,12 +22,20 @@ library(sf)
 library(tmap)
 library(ggplot2)
 library(cowplot)
+library(knitr)
 ```
 
 
 ## Part 1: Legacy of redlining in current environmental (in)justice
 
 ```{r}
+# Create color palette for this project
+robinhood1_palatte <-c("#698847ff","#519e99ff", "#e3ba11ff", "#8c241cff", "#8f592aff")
+
+```
+
+
+```{r, message=FALSE, results='hide', warning=FALSE}
 # Read in data
 
 # Read in ejscreen
@@ -47,61 +57,46 @@ bird_obs <- st_read(here::here("data", "gbif-birds-LA", "gbif-birds-LA.shp"))
 
 ```
 
-
 ```{r}
-#color = "#547c79ff"
-full_la <- tm_shape(cali, bbox = "Los Angeles County") +
-  tm_polygons() +
-tm_shape(la_county) +
-  tm_polygons() +
-  tm_shape(la_map_ineq) +
-  tm_polygons(col = "grade") +
-  tm_layout(legend.show = FALSE)
-```
-
-```{r}
-full_la
-```
-
-
-```{r}
+# Create a bbox for la_map_ineq
 ineq_bbox <- st_bbox(la_map_ineq)
-
 ```
 
 ```{r}
-mini_la <- tm_shape(cali, bbox = ineq_bbox) +
-  tm_polygons() +
+# Create map of redlining in LA
+
+tm_shape(cali, bbox = ineq_bbox) +
+  tm_polygons(col = "#c8bfa619", alpha = .4) +
 tm_shape(la_county) +
-  tm_polygons() +
-  tm_shape(la_map_ineq) +
-  tm_polygons(col = "grade") +
+  tm_polygons(col = "#c8bfa619", alpha = .4) +
+tm_shape(la_map_ineq) +
+  tm_polygons(col = "grade", 
+             palette = c("#698847ff", "#519e99ff","#e3ba11ff", "#8c241cff", "#8f592aff"),
+                         title = "HOLC Grade") +
+   tm_scale_bar(position = c("right", "top")) +
+   tm_compass( show.labels = 2, 
+              type = "arrow",
+              size = 1, 
+              text.size = .75,
+              position = c("right", "top")) + 
+   tm_layout(main.title = "HOLC Districts in LA County")
 ```
 
 ```{r}
-print(mini_la)
+# Create function to check if la_county and la_map_ineq have same crs system
+check_crs <- function(la_county, la_map_ineq) {
+  if (!st_crs(la_county) == st_crs(la_map_ineq)) {
+    warning("CRS do not match. Use st_transform to creating match crs systems.")
+  } else {
+    print("CRS match!")
+  }
+}
 ```
 
-
-```{r}
-main_tmap <- tmap_grob(mini_la)
-
-sub_tmap <- tmap_grob(full_la)
+```{r, message=FALSE, results='hide', warning=FALSE}
+# Check to see if la_county and la_map_ineq have same crs
+check_crs(la_county, la_map_ineq)
 ```
-
-```{r}
-inset_la <- ggdraw() +
-  draw_plot(main_tmap) +
-  draw_plot(sub_tmap, height = 0.3,
-    x = -0.3
-  )
-```
-
-```{r}
-print(inset_la)
-```
-
-# ADD A WARNING ABOUT WHETHER OR NOT THEY ARE THE SAME CRS
 
 ```{r}
 # Ensure la_map_ineq and la_county are using the same la_map_ineq crs system
@@ -109,10 +104,14 @@ la_map_ineq <- st_transform(la_map_ineq, crs = st_crs(la_county))
 ```
 
 ```{r}
+# Check to see if la_county and la_map_ineq have same crs again
+check_crs(la_county, la_map_ineq)
+```
+
+```{r}
 # Join la_county and la_map_ineq with st_intersects()
 joined_la <- st_join(la_county, la_map_ineq, join = st_intersects)
 ```
-
 
 ```{r}
 # Create table of percent in each HOLC group
@@ -121,11 +120,6 @@ HOLC_percent <- joined_la %>%
   summarise(count = n()) %>%
   mutate(HOLC_percent = (count / sum(count)) * 100)
   
-```
-
-```{r}
-# Print table
-print(HOLC_percent)
 ```
 
 ```{r}
@@ -139,21 +133,35 @@ sum_current_conditions <- joined_la %>%
 ```
 
 ```{r}
+# Drop geometry column for table
+sum_current_conditions_table <- st_drop_geometry(sum_current_conditions)
+```
+
+```{r}
+kable(sum_current_conditions_table, col.names = c("HOLC Grade", "Low Income Percentage", "PM2.5 Mean Percentile", "Life Expectancy Percentile"))
+```
+
+# Do the test that on the units for pm
+
+```{r}
 # Create graph for sum_current_conditions
-ggplot(data = sum_current_conditions, aes(x = grade, y = pm2_mean)) +
-  geom_col(fill = "#547c79ff") +
+ggplot(data = sum_current_conditions, aes(x = grade, y = pm2_mean, fill = grade)) +
+  geom_col() +
+   scale_fill_manual(values=robinhood1_palatte) +
   labs(title = "Mean PM 2.5 Percentile by HOLC Grade", 
        x = "HOLC Grade", 
        y = "Mean Life PM 2.5 Percentile")
 
-ggplot(data = sum_current_conditions, aes(x = grade, y = low_income_mean)) +
+ggplot(data = sum_current_conditions, aes(x = grade, y = low_income_mean, fill = grade)) +
   geom_col() +
+   scale_fill_manual(values=robinhood1_palatte) +
   labs(title = "Mean Low Income Percentile by HOLC Grade", 
        x = "HOLC Grade", 
        y = "Mean Percent Low Income")
 
-ggplot(data = sum_current_conditions, aes(x = grade, y = life_exp_mean)) +
+ggplot(data = sum_current_conditions, aes(x = grade, y = life_exp_mean, fill = grade)) +
   geom_col() +
+   scale_fill_manual(values=robinhood1_palatte) +
   labs(title = "Mean Life Expectancy Percentile by HOLC Grade", 
        x = "HOLC Grade", 
        y = "Mean Life Expectancy Percentile")
@@ -163,15 +171,30 @@ ggplot(data = sum_current_conditions, aes(x = grade, y = life_exp_mean)) +
 ## Part 2: Legacy of redlining in biodiversity observations
 
 ```{r}
-
+# Create function to check if la_county and bird_obs have same crs system
+check_crs2 <- function(la_county, bird_obs) {
+  if (!st_crs(la_county) == st_crs(bird_obs)) {
+    warning("CRS do not match. Use st_transform to creating match crs systems.")
+  } else {
+    print("CRS match")
+  }
+}
 ```
 
-# ADD A WARNING ABOUT WHETHER OR NOT THEY ARE THE SAME CRS
+```{r, message=FALSE, results='hide', warning=FALSE}
+# Check to see if la_county and bird_obs have same crs
+check_crs2(la_county, bird_obs)
+```
 
 ```{r}
+# st_transform so bird_obs and la_county have same crs
 bird_obs <- st_transform(bird_obs, crs = st_crs(la_county))
 ```
 
+```{r}
+# Check to see if la_county and bird_obs have same crs again
+check_crs2(la_county, bird_obs)
+```
 
 ```{r}
 la_birds <- st_join(la_map_ineq, bird_obs, join = st_intersects)
@@ -179,6 +202,7 @@ la_birds <- st_join(la_map_ineq, bird_obs, join = st_intersects)
 
 
 ```{r}
+# Create table of bird observations by HOLC grade
 birds_obs_percent <- la_birds %>%
   group_by(grade) %>%
   summarise(obs_count = n()) %>%
@@ -187,19 +211,12 @@ birds_obs_percent <- la_birds %>%
 
 ```{r}
 # Create col chart of the percent of birds in each grade
-ggplot(data = birds_obs_percent, aes(x = grade, y = percentage)) +
-  geom_col()
+ggplot(data = birds_obs_percent, aes(x = grade, y = percentage, fill = grade)) +
+  geom_col() +
+  scale_fill_manual(values=robinhood1_palatte) +
+  labs(title = "Percentage of Bird Observations by HOLC Grade", 
+       x = "HOLC Grade", 
+       y = "Percentage of Bird Observations")
 ```
 
-```{r}
-tm_shape(cali, bbox = "Los Angeles County") +
-  tm_polygons() +
-tm_shape(la_county) +
-  tm_polygons() +
-  tm_shape(la_map_ineq) +
-  tm_polygons(col = "grade") +
-  tm_layout(legend.show = FALSE) +
-  tm_shape(la_birds) +
-  tm_polygons()
-```
 
