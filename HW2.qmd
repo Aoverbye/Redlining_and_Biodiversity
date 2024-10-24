@@ -25,7 +25,6 @@ library(cowplot)
 library(knitr)
 ```
 
-
 ## Part 1: Legacy of redlining in current environmental (in)justice
 
 ```{r}
@@ -33,7 +32,6 @@ library(knitr)
 robinhood1_palatte <-c("#698847ff","#519e99ff", "#e3ba11ff", "#8c241cff", "#8f592aff")
 
 ```
-
 
 ```{r, message=FALSE, results='hide', warning=FALSE}
 # Read in data
@@ -79,7 +77,7 @@ tm_shape(la_map_ineq) +
               size = 1, 
               text.size = .75,
               position = c("right", "top")) + 
-   tm_layout(main.title = "HOLC Districts in LA County")
+   tm_layout(main.title = "HOLC Grade Areas in LA County")
 ```
 
 ```{r}
@@ -138,10 +136,8 @@ sum_current_conditions_table <- st_drop_geometry(sum_current_conditions)
 ```
 
 ```{r}
-kable(sum_current_conditions_table, col.names = c("HOLC Grade", "Low Income Percentage", "PM2.5 Mean Percentile", "Life Expectancy Percentile"))
+kable(sum_current_conditions_table, col.names = c("HOLC Grade", "Low Income Percentage", "PM2.5 Mean Percentile", "Low Life Expectancy Percentile"))
 ```
-
-# Do the test that on the units for pm
 
 ```{r}
 # Create graph for sum_current_conditions
@@ -167,6 +163,9 @@ ggplot(data = sum_current_conditions, aes(x = grade, y = life_exp_mean, fill = g
        y = "Mean Life Expectancy Percentile")
 ```
 
+### Looking At The Data
+
+When looking at the geographical map of Los Angeles County, we can see that many of the grade C and D HOLC areas are clustered in the center of the city, whereas the A and B grade areas are more prominent on the outskirts. The tables and graphs on income level, particulate matter, and life expectancy show that areas affected by redlining have lower incomes, more particulate matter in the air, and lower life expectancies. These findings illustrate that redlining has had a negative impact on those living in these areas
 
 ## Part 2: Legacy of redlining in biodiversity observations
 
@@ -200,7 +199,6 @@ check_crs2(la_county, bird_obs)
 la_birds <- st_join(la_map_ineq, bird_obs, join = st_intersects)
 ```
 
-
 ```{r}
 # Create table of bird observations by HOLC grade
 birds_obs_percent <- la_birds %>%
@@ -219,4 +217,16 @@ ggplot(data = birds_obs_percent, aes(x = grade, y = percentage, fill = grade)) +
        y = "Percentage of Bird Observations")
 ```
 
+### Looking At The Data
 
+Our data show that the majority of bird observations have been done within the C HOLC grade area. The second most common grades are the A and D grade areas. This is unexpected because previous data has shown that there are fewer bird observations in heavily redlined areas (Ellis-Soto et al., 2023). This indicates that there may be a more complex relationship between bird observations and redlining that could be investigated in the future.
+
+**Citations:**
+
+Ellis-Soto, D., Chapman, M., & Locke, D. H. (2023). Historical redlining is associated with increasing geographical disparities in bird biodiversity sampling in the United States. Nature Human Behaviour, 1-9
+
+GBIF.org, gbif-birds-LA dataset
+
+Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al., “Mapping Inequality,” American Panorama, ed. Robert K. Nelson and Edward L. Ayers, accessed October 24, 2023
+
+U.S. Environmental Protection Agency (EPA), 2024. EJScreen Technical Documentation, accessed October 24, 2023
