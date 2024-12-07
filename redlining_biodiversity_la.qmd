@@ -1,5 +1,5 @@
 ---
-title: "Homework Assignment Two"
+title: "Impact of Redlining In LA On Avian Biodiversity"
 subtitle: "Exploring patterns of environmental justice"
 author: Amanda G. Overbye
 date: last-modified

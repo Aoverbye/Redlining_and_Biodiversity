@@ -2,6 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-data/*
-tmap01.png/*
-PATH/*
+data/
+redlining_biodiversity_la_files/
