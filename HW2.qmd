@@ -225,8 +225,8 @@ Our data show that the majority of bird observations have been done within the C
 
 Ellis-Soto, D., Chapman, M., & Locke, D. H. (2023). Historical redlining is associated with increasing geographical disparities in bird biodiversity sampling in the United States. Nature Human Behaviour, 1-9
 
-GBIF.org, gbif-birds-LA  dataset
+GBIF.org, gbif-birds-LA dataset
 
-Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al., “Mapping Inequality,” American Panorama, ed. Robert K. Nelson and Edward L. Ayers, accessed October 24, 2023
+Robert K. Nelson, LaDale Winling, Richard Marciano, Nathan Connolly, et al., “Mapping Inequality,” American Panorama, ed.Robert K. Nelson and Edward L. Ayers, accessed October 24, 2023
 
 U.S. Environmental Protection Agency (EPA), 2024. EJScreen Technical Documentation, accessed October 24, 2023
