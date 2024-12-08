@@ -29,6 +29,16 @@ This repository uses the following skills:
 - Summarizing data with group_by, summarise, and calculating percentages. 
 - Identifying patterns and trends in demographic and biodiversity data.
 
+### Repository 
+
+``` bash
+Redlining_and_Biodiversity
+│   README.md
+|   redlining_biodiversity_la.Rproj
+|   redlining_biodiversity_la.html
+|   redlining_biodiversity_la.qmd
+|   .gitignore
+```
 
 ### Data
 
