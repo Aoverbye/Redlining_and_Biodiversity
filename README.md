@@ -10,27 +10,25 @@ This repository uses the following skills:
 
 **Data Handling and Cleaning**
 
-Loading and filtering large datasets using dplyr and sf. Managing and transforming coordinate reference systems (CRS).
+- Loading and filtering large datasets using dplyr and sf. 
+- Managing and transforming coordinate reference systems (CRS).
 
 **Geospatial Analysis**
 
-Working with shapefiles and bounding boxes. Joining spatial datasets (st_join, st_intersects).
+- Working with shapefiles and bounding boxes. 
+- Joining spatial datasets (st_join, st_intersects).
 
 **Data Visualization**
 
-Creating thematic maps with tmap. Generating plots and charts using ggplot2.
-
-**Statistical Analysis**
-
-Summarizing data with group_by, summarise, and calculating percentages. Identifying patterns and trends in demographic and biodiversity data.
+- Creating thematic maps with tmap. 
+- Generating plots and charts using ggplot2.
 
 **Automation and Functions**
 
-Writing reusable functions to check CRS compatibility.
+- Writing reusable functions to check CRS compatibility.
+- Summarizing data with group_by, summarise, and calculating percentages. 
+- Identifying patterns and trends in demographic and biodiversity data.
 
-**Reproducibility**
-
-Using here for file paths. Building the analysis pipeline within an R Markdown file for transparency.
 
 ### Data
 
