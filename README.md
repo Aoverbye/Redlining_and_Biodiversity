@@ -1,18 +1,22 @@
-# Historic Redlining in LA County and Its Impact on Avian Biodiversiry.
+# Historic Redlining in LA County and Its Impact on Avian Biodiversity.
 
 #### By Amanda G. Overbye
-The purpose of this project is to a data analysis and HOLC areas in LA County, CA and how they relate to avain biodiversity. 
+
+The purpose of this project is to a data analysis and HOLC areas in LA County, CA and how they relate to avian biodiversity.
 
 ### Data
 
-EJScreen
-The data is located in the file ejscreen/EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb and sourced from the U.S. EPA. It provides environmental and demographic data at the Census block group level.
+-   **EJScreen**
 
-HOLC Redlining
-The file mapping-inequality/mapping-inequality-los-angeles.json contains digitized HOLC grade maps for Los Angeles, sourced from the Mapping Inequality Project at the University of Richmond. 
+    The data is located in the file ejscreen/EJSCREEN_2023_BG_StatePct_with_AS_CNMI_GU_VI.gdb and sourced from the U.S. EPA. It provides environmental and demographic data at the Census block group level.
 
-Biodiversity Observations
-The data is contained in gbif-birds-LA.shp and sourced from the Global Biodiversity Information Facility (GBIF). It includes bird observation data about location, date, and what species was observed. 
+-   **HOLC Redlining**
+
+    The file mapping-inequality/mapping-inequality-los-angeles.json contains digitized HOLC grade maps for Los Angeles, sourced from the Mapping Inequality Project at the University of Richmond.
+
+-   **Biodiversity Observations**
+
+    The data is contained in gbif-birds-LA.shp and sourced from the Global Biodiversity Information Facility (GBIF). It includes bird observation data about location, date, and what species was observed.
 
 **References**
 
